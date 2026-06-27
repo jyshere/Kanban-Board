@@ -11,7 +11,7 @@ const initialBoard = {
     },
     {
       id: "col-2",
-      title: "Doing",
+      title: "In-progress",
       cards: []
     },
     {

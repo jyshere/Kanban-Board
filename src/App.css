@@ -1,58 +1,178 @@
-/* Global page */
-body {
+/* =========================
+   GLOBAL
+========================= */
+
+* {
   margin: 0;
-  background: #f5f6f8;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
 }
 
-/* App container */
-.app {
-  padding: 20px;
+body {
+  background: #f4f7fb;
+  color: #075acd;
 }
 
-/* Title */
-.app-title {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
+/* =========================
+   BOARD
+========================= */
 
-/* Board layout */
 .board {
   display: flex;
   gap: 16px;
-  justify-content: center;
+  padding: 20px;
+  overflow-x: auto;
+  height: 100vh;
   align-items: flex-start;
 }
 
-/* Column */
+/* =========================
+   COLUMN
+========================= */
+
 .column {
-  width: 260px;
-  background: #e9ecef;
+  background: #ffffff;
+  width: 280px;
+  min-height: 450px;
+  border-radius: 12px;
   padding: 12px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.2s ease;
+  border: 1px solid #e5e7eb;
 }
 
-/* Column title */
+/* highlight on drag over */
+.column-hover {
+  background: #f0f7ff;
+  border: 1px solid #60a5fa;
+}
+
+/* =========================
+   COLUMN TITLE
+========================= */
+
 .column-title {
-  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
   margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
+  color: #1e3a8a;
+  padding: 6px 4px;
 }
 
-/* Card */
+/* =========================
+   CARD
+========================= */
+
 .card {
-  background: white;
+  background: #ffffff;
   padding: 10px;
   margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: #60a5fa;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.card:active {
+  cursor: grabbing;
+  opacity: 0.7;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.edit-btn,
+.delete-btn {
+  margin-left: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: #6b7280;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  color: #2563eb;
+  transform: scale(1.2);
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* =========================
+   INPUT AREA
+========================= */
+
+.column-input-area {
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.column-input {
+  flex: 1;
+  padding: 7px;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+
+.column-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.column-button {
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.card:hover {
-  transform: scale(1.02);
+.column-button:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.board::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.app {
+  padding: 10px;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2563eb;
+  margin: 16px 20px;
+  letter-spacing: 0.5px;
 }
