@@ -1,5 +1,5 @@
-const initialBoard = {
-  id: "board-1",
+const initialBoards = [{
+  id: `board-${Date.now()}`,
   title: "My Kanban Board",
   columns: [
     {
@@ -20,6 +20,6 @@ const initialBoard = {
       cards: []
     }
   ]
-};
+}];
 
-export default initialBoard;
+export default initialBoards;

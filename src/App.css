@@ -32,14 +32,14 @@ body {
 ========================= */
 
 .column {
-  background: #ffffff;
+  background: #f8fafc;
   width: 280px;
-  min-height: 450px;
+  min-height: 620px;
   border-radius: 12px;
   padding: 12px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   transition: 0.2s ease;
   border: 1px solid #e5e7eb;
 }
@@ -67,12 +67,12 @@ body {
 ========================= */
 
 .card {
-  background: #ffffff;
+   background: white;
+  border-radius: 12px;
   padding: 10px;
   margin: 8px 0;
-  border-radius: 10px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   cursor: grab;
   transition: all 0.2s ease;
 }
@@ -126,6 +126,7 @@ body {
 
 .column-input {
   flex: 1;
+  height: 48px;
   padding: 7px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
@@ -138,7 +139,8 @@ body {
 }
 
 .column-button {
-  padding: 7px 10px;
+    height: 48px;
+  padding: 0 20px;
   border: none;
   border-radius: 8px;
   background: #2563eb;
@@ -160,19 +162,32 @@ body {
   height: 8px;
 }
 
-.board::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
+.board {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  overflow-x: auto;
 }
 
 .app {
-  padding: 10px;
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
 }
 
 .app-title {
-  font-size: 24px;
+  font-size: 42px;
   font-weight: 700;
-  color: #2563eb;
-  margin: 16px 20px;
-  letter-spacing: 0.5px;
+  color: #111827;
+  margin-bottom: 30px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow: hidden;
+}
+
+h1,h2{
+  color:blue;
 }

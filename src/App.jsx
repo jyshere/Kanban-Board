@@ -1,120 +1,197 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import initialBoard from "./data/initialBoard";
+import { useState } from "react";
+import initialBoards from "./data/initialBoards";
 import Board from "./components/Board";
+import BoardList from "./components/BoardList";
 
 export default function App() {
-  const [board, setBoard] = useState(initialBoard);
+  const [boards, setBoards] = useState(initialBoards);
+  const [selectedBoardId, setSelectedBoardId] = useState(null)
 
-  const addCard = (ColumnId, title) => {
+  const currentBoard = boards.find((b) => (b.id === selectedBoardId));
+
+  const createBoard = (title) => {
+    const newBoard = {
+      id: `board-${Date.now()}`,
+      title,
+      columns: [
+        {
+          id: "col-1",
+          title: "To Do",
+          cards: []
+        },
+        {
+          id: "col-2",
+          title: "In-progress",
+          cards: []
+        },
+        {
+          id: "col-3",
+          title: "Done",
+          cards: []
+        }
+
+      ]
+    };
+
+    setBoards([...boards,newBoard]);
+    setSelectedBoardId(newBoard.id);
+
+
+  }
+
+  const addCard = (columnId, title) => {
     const newCard = {
       id: Date.now().toString(),
       title
     };
 
+    const updatedBoards = boards.map(board => {
+      if (board.id !== selectedBoardId) return board;
 
-    const newBoard = {
-      ...board,
-      columns: board.columns.map((col) =>
-        col.id === ColumnId ?
-          { ...col, cards: [...col.cards, newCard] }
-          : col
-      )
-    }
+      return {
+        ...board,
+        columns: board.columns.map(col =>
+          col.id === columnId
+            ? { ...col, cards: [...col.cards, newCard] }
+            : col
+        )
+      };
+    });
 
-
-    setBoard(newBoard);
-  }
+    setBoards(updatedBoards);
+  };
 
   const deleteCard = (columnId, cardId) => {
-    const updatedBoard = {
-      ...board,
-      columns: board.columns.map((col) =>
-        col.id === columnId
-          ? {
-            ...col,
-            cards: col.cards.filter(
-              (card) => card.id !== cardId
-            )
-          }
-          : col
-      )
-    };
+    const updatedBoards = boards.map(board => {
+      if (board.id !== selectedBoardId) return board;
 
-    setBoard(updatedBoard);
+      return {
+        ...board,
+        columns: board.columns.map(col =>
+          col.id === columnId
+            ? {
+              ...col,
+              cards: col.cards.filter(
+                card => card.id !== cardId
+              )
+            }
+            : col
+        )
+      };
+    });
+
+    setBoards(updatedBoards);
   };
 
 
   const editCard = (columnId, cardId, newTitle) => {
-    const editedBoard = {
-      ...board,
-      columns: board.columns.map((col) => col.id === columnId ?
-        {
-          ...col,
-          cards: col.cards.map((card) => card.id === cardId ?
-            {
-              ...card,
-              title: newTitle
+    const updatedBoards = boards.map(board => {
+      if (board.id !== selectedBoardId) return board;
+
+      return {
+        ...board,
+        columns: board.columns.map(col =>
+          col.id === columnId
+            ? {
+              ...col,
+              cards: col.cards.map(card =>
+                card.id === cardId
+                  ? {
+                    ...card,
+                    title: newTitle
+                  }
+                  : card
+              )
             }
-            :
-            card
-          )
+            : col
+        )
+      };
+    });
 
-        } :
-        col
-
-      )
-    }
-    setBoard(editedBoard);
+    setBoards(updatedBoards);
   };
 
 
 
- const moveCard = (cardId, sourceColumnId, destinationColumnId) => {
 
-  const sourceColumn = board.columns.find(
-    col => col.id === sourceColumnId
-  );
 
-   const cardToMove = sourceColumn.cards.find(
-    card => card.id === cardId
-  );
+  const moveCard = (cardId, sourceColumnId, destinationColumnId) => {
+    const sourceColumn = currentBoard.columns.find(
+      col => col.id === sourceColumnId
+    );
 
-  if (!sourceColumn || !cardToMove) {
-   
-    return;
-  }
+    if (!sourceColumn) return;
 
-  const updatedColumns = board.columns.map(col => {
-    if (col.id === sourceColumnId) {
+    const cardToMove = sourceColumn.cards.find(
+      card => card.id === cardId
+    );
+
+    if (!cardToMove) return;
+
+    const updatedBoards = boards.map(board => {
+      if (board.id !== selectedBoardId) return board;
+
       return {
-        ...col,
-        cards: col.cards.filter(card => card.id !== cardId)
+        ...board,
+        columns: board.columns.map(col => {
+          if (col.id === sourceColumnId) {
+            return {
+              ...col,
+              cards: col.cards.filter(
+                card => card.id !== cardId
+              )
+            };
+          }
+
+          if (col.id === destinationColumnId) {
+            return {
+              ...col,
+              cards: [...col.cards, cardToMove]
+            };
+          }
+
+          return col;
+        })
       };
-    }
+    });
 
-    if (col.id === destinationColumnId) {
-      return {
-        ...col,
-        cards: [...col.cards, cardToMove]
-      };
-    }
-
-    return col;
-  });
-
-  setBoard({
-    ...board,
-    columns: updatedColumns
-  });
-};
+    setBoards(updatedBoards);
+  };
 
 
   return (
     <div className="app">
-      <h1 className="app-title">{board.title}</h1>
-      <Board board={board} addCard={addCard} deleteCard={deleteCard} editCard={editCard} moveCard={moveCard}/>
 
-    </div>
+  <div className="sidebar">
+    <h2>Boards</h2>
+
+    <BoardList
+      boards={boards}
+      selectedBoardId={selectedBoardId}
+      setSelectedBoardId={setSelectedBoardId}
+      createBoard={createBoard}
+    />
+  </div>
+
+  <div className="main-content">
+
+    {currentBoard && (
+      <>
+        <h1>{currentBoard.title}</h1>
+
+        <Board
+          board={currentBoard}
+          addCard={addCard}
+          deleteCard={deleteCard}
+          editCard={editCard}
+          moveCard={moveCard}
+        />
+      </>
+    )}
+
+  </div>
+
+</div>
   );
 }
